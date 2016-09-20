@@ -1,0 +1,18 @@
+  #For plot 3
+  ass1 <- read.table("./household_power_consumption.txt",sep = ";" ,header = TRUE) #load the .txt
+  ass1[ass1=="?"]<-NA # replace ? to NA
+  ass1$Date <- format(as.Date(ass1$Date,format="%d/%m/%Y"),"%Y-%m-%d")
+  ass1_final <- subset(ass1, ass1$Date >="2007-02-01"& ass1$Date<="2007-02-02")
+  
+  date_time <- strptime(paste(ass1_final$Date, ass1_final$Time, sep=" "), "%Y-%m-%d %H:%M:%S") 
+  globalActivePower <- as.numeric(ass1_final$Global_active_power)
+  subMetering1 <- as.numeric(ass1_final$Sub_metering_1)
+  subMetering2 <- as.numeric(ass1_final$Sub_metering_2)
+  subMetering3 <- as.numeric(ass1_final$Sub_metering_3)
+  
+  png("plot3.png", width=480, height=480)
+  plot(date_time, subMetering1, type="l", ylab="Energy Submetering", xlab="")
+  lines(date_time, subMetering2, type="l", col="red")
+  lines(date_time, subMetering3, type="l", col="blue")
+  legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=1, lwd=2.5, col=c("black", "red", "blue"))
+  dev.off()
